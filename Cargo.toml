@@ -1,0 +1,17 @@
+[package]
+name = "happy-birthday"
+version = "0.1.0"
+edition = "2021"
+description = "Template for starting a Yew project using Trunk"
+repository = "https://github.com/SimonZehetner/TODO"
+license = "MIT OR Apache-2.0"
+keywords = ["yew", "trunk"]
+categories = ["gui", "wasm", "web-programming"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+gloo = "0.8"
+js-sys = "0.3"
+num-format = "0.4"
+yew = { version="0.20", features=["csr"] }
+

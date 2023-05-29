@@ -22,6 +22,7 @@ enum Msg {
 
 #[derive(Properties, PartialEq)]
 struct OldAfProps {
+    title: AttrValue,
     birthday: Date,
 }
 
@@ -59,8 +60,8 @@ impl Component for OldAF {
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html {
-        let local_birthday = ctx.props().birthday.clone();
-        let birthday_timestamp = local_birthday.get_time();
+        let birthday = ctx.props().birthday.clone();
+        let birthday_timestamp = birthday.get_time();
         let current_timestamp = self.time.get_time();
 
         let difference_seconds = ((current_timestamp - birthday_timestamp) / 1000.0) as u32;
@@ -69,18 +70,18 @@ impl Component for OldAF {
         let difference_days = difference_hours / 24;
         let difference_weeks = difference_days / 7;
         let mut difference_years =
-            self.time.get_full_year() - local_birthday.get_full_year();
-        let difference_months = (difference_years * 12) - local_birthday.get_month() + self.time.get_month();
-        if local_birthday.get_month() > self.time.get_month()
-            || (local_birthday.get_month() == self.time.get_month()
-                && local_birthday.get_day() > self.time.get_day())
+            self.time.get_full_year() - birthday.get_full_year();
+        let difference_months = (difference_years * 12) - birthday.get_month() + self.time.get_month();
+        if birthday.get_month() > self.time.get_month()
+            || (birthday.get_month() == self.time.get_month()
+                && birthday.get_date() > self.time.get_date())
         {
             difference_years -= 1;
         }
 
         html! {
             <div class="old-af-wrapper">
-                <span class="old-af-header">{ "Holy Shit bist du scho oid:" }</span>
+                <span class="old-af-header">{ ctx.props().title.clone() }</span>
                 <div class="old-af-content">
                     <span>{ difference_seconds.to_formatted_string(&Locale::de) } {" Sekunden"}</span>
                     <span>{ difference_minutes.to_formatted_string(&Locale::de) } {" Minuten"}</span>
@@ -111,7 +112,7 @@ fn cake() -> Html {
 fn footer() -> Html {
     html! {
         <footer style="margin-top: 1em; font-size: 1rem;">
-            { "Made with Yew (Rust), leider CSS und viel Liebe" }
+            { "Made with viel Liebe, Yew (Rust) und leider CSS" }
         </footer>
     }
 }
@@ -121,7 +122,8 @@ pub fn app() -> Html {
     html! {
         <main>
             <Header/>
-            <OldAF birthday={Date::new_with_year_month_day(1993, 5, 1)}/>
+            <OldAF title={"Holy Shit bist du scho oid:"} birthday={Date::new_with_year_month_day(1993, 5, 1)}/>
+            <OldAF title={"Zeit seit Herr der Ringe schaun:"} birthday={Date::new_with_year_month_day_hr(2022, 10, 1, 18)}/>
             <Cake/>
             <Footer/>
         </main>

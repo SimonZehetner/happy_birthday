@@ -17,6 +17,8 @@ jobs:
             toolchain: nightly
             override: true
             components: rustfmt, clippy
+      - name: Install Wasm Target
+        run: rustup target add wasm32-unknown-unknown
       - name: trunk build
         env:
           VERSION: v0.16.0
